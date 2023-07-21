@@ -8,7 +8,8 @@ router.route('/post')
     .post(controllers_1.postController.createPost);
 router.route('/post/:id')
     .get(controllers_1.postController.getPostById)
-    .put(controllers_1.postController.updatePost);
+    .put(controllers_1.postController.updatePost)
+    .delete(controllers_1.postController.deletePost);
 router.route('/post/user/:id')
     .get(controllers_1.postController.getPostsByUserId);
 exports.default = router;

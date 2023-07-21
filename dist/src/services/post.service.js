@@ -25,6 +25,7 @@ const createPost = (title, content, authorId) => {
             title,
             content,
             authorId,
+            published: true,
         },
     });
 };
@@ -39,10 +40,21 @@ const updatePost = (id, title, content) => {
         },
     });
 };
+const deletePost = (id) => {
+    return postClient.update({
+        where: {
+            id,
+        },
+        data: {
+            deleted: true,
+        }
+    });
+};
 exports.default = {
     getPosts,
     getPostById,
     getPostsByUserId,
     createPost,
     updatePost,
+    deletePost,
 };

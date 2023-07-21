@@ -135,10 +135,49 @@ const updatePost = async (req: IRequestWithUserData, res: Response) => {
   }
 };
 
+const deletePost = async (req: IRequestWithUserData, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { id: userId } = req.user;
+
+    const post = await postService.getPostById(Number(id));
+    if(!post) {
+      return res.status(401).json({
+        message: 'Post not found',
+      });
+    }
+
+    if(post.authorId !== userId) {
+      return res.status(401).json({
+        message: 'You are not authorized to delete this post',
+      });
+    }
+
+    const deletedPost = await postService.deletePost(Number(id));
+    if(!deletedPost) {
+      return res.status(400).json({
+        message: 'Unable to delete post',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Post deleted successfully',
+      payload: deletedPost,
+    });
+  } catch (error) {
+    if(error instanceof Error)
+      res.status(500).json({
+        message: 'Something went wrong',
+        error: error.message,
+      });
+  }
+};
+
 export default {
   getPosts,
   getPostById,
   getPostsByUserId,
   createPost,
   updatePost,
+  deletePost,
 };
