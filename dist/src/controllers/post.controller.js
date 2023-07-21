@@ -49,7 +49,30 @@ const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
     }
 });
+const getPostsByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.user;
+        const posts = yield services_1.postService.getPostsByUserId(id);
+        if (!posts) {
+            return res.status(404).json({
+                message: 'Posts not found',
+            });
+        }
+        res.status(200).json({
+            message: 'Posts fetched successfully',
+            payload: posts,
+        });
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: error.message,
+            });
+    }
+});
 exports.default = {
     getPosts,
     getPostById,
+    getPostsByUserId,
 };

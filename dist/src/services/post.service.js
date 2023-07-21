@@ -12,7 +12,15 @@ const getPostById = (id) => {
         },
     });
 };
+const getPostsByUserId = (userId) => {
+    return postClient.findMany({
+        where: {
+            authorId: userId,
+        },
+    });
+};
 exports.default = {
     getPosts,
     getPostById,
+    getPostsByUserId,
 };
