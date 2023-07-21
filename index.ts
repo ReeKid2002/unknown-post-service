@@ -1,11 +1,13 @@
 import dotenv from 'dotenv';
 import express, { Express, Request, Response } from 'express';
+import { postRouter } from './src/routes';
 
 dotenv.config();
 
 const app: Express = express();
 
 app.use(express.json());
+app.use('/api', postRouter);
 
 app.get('/ping', (req: Request, res: Response) => {
   res.status(200).json({ message: 'pong' });
