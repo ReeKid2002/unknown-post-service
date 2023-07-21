@@ -33,7 +33,6 @@ const getPostById = async  (req: Request, res: Response) => {
       payload: post,
     });
   } catch (error) {
-    console.log(error);
     if(error instanceof Error) 
       res.status(500).json({
         message: 'Something went wrong',
@@ -42,7 +41,7 @@ const getPostById = async  (req: Request, res: Response) => {
   }
 };
 
-interface IGetPostsByUserIdRequest extends Request {
+interface IRequestWithUserData extends Request {
   user: {
     id: number;
     name: string;
@@ -50,7 +49,7 @@ interface IGetPostsByUserIdRequest extends Request {
   };
 }
 
-const getPostsByUserId = async (req: IGetPostsByUserIdRequest, res: Response) => {
+const getPostsByUserId = async (req: IRequestWithUserData, res: Response) => {
   try {
     const { id } = req.user;
     const posts = await postService.getPostsByUserId(id);
@@ -72,8 +71,34 @@ const getPostsByUserId = async (req: IGetPostsByUserIdRequest, res: Response) =>
   }
 };
 
+const createPost = async (req: IRequestWithUserData, res: Response) => {
+  try {
+    const { title, content } = req.body;
+    const { id } = req.user;
+    const post = await postService.createPost(title, content, id);
+    
+    if(!post) {
+      return res.status(500).json({
+        message: 'Unable to create post',
+      });
+    }
+
+    res.status(201).json({
+      message: 'Post created successfully',
+      payload: post,
+    });
+  } catch (error) {
+    if(error instanceof Error)
+      res.status(500).json({
+        message: 'Something went wrong',
+        error: error.message,
+      });
+  }
+};
+
 export default {
   getPosts,
   getPostById,
   getPostsByUserId,
+  createPost,
 };

@@ -19,8 +19,18 @@ const getPostsByUserId = (userId) => {
         },
     });
 };
+const createPost = (title, content, authorId) => {
+    return postClient.create({
+        data: {
+            title,
+            content,
+            authorId,
+        },
+    });
+};
 exports.default = {
     getPosts,
     getPostById,
     getPostsByUserId,
+    createPost,
 };

@@ -41,7 +41,6 @@ const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
     catch (error) {
-        console.log(error);
         if (error instanceof Error)
             res.status(500).json({
                 message: 'Something went wrong',
@@ -71,8 +70,32 @@ const getPostsByUserId = (req, res) => __awaiter(void 0, void 0, void 0, functio
             });
     }
 });
+const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { title, content } = req.body;
+        const { id } = req.user;
+        const post = yield services_1.postService.createPost(title, content, id);
+        if (!post) {
+            return res.status(500).json({
+                message: 'Unable to create post',
+            });
+        }
+        res.status(201).json({
+            message: 'Post created successfully',
+            payload: post,
+        });
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: error.message,
+            });
+    }
+});
 exports.default = {
     getPosts,
     getPostById,
     getPostsByUserId,
+    createPost,
 };
