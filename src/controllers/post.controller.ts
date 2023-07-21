@@ -96,9 +96,49 @@ const createPost = async (req: IRequestWithUserData, res: Response) => {
   }
 };
 
+const updatePost = async (req: IRequestWithUserData, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const { id: userId } = req.user;
+
+    const post = await postService.getPostById(Number(id));
+    if(!post) {
+      return res.status(401).json({
+        message: 'Post not found',
+      });
+    }
+
+    if(post.authorId !== userId) {
+      return res.status(401).json({
+        message: 'You are not authorized to update this post',
+      });
+    }
+
+    const updatedPost = await postService.updatePost(Number(id), title, content);
+    if(!updatedPost) {
+      return res.status(400).json({
+        message: 'Unable to update post',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Post updated successfully',
+      payload: updatedPost,
+    });
+  } catch (error) {
+    if(error instanceof Error)
+      res.status(500).json({
+        message: 'Something went wrong',
+        error: error.message,
+      });
+  }
+};
+
 export default {
   getPosts,
   getPostById,
   getPostsByUserId,
   createPost,
+  updatePost,
 };

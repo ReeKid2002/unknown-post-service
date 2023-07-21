@@ -28,9 +28,21 @@ const createPost = (title, content, authorId) => {
         },
     });
 };
+const updatePost = (id, title, content) => {
+    return postClient.update({
+        where: {
+            id,
+        },
+        data: {
+            title,
+            content,
+        },
+    });
+};
 exports.default = {
     getPosts,
     getPostById,
     getPostsByUserId,
     createPost,
+    updatePost,
 };

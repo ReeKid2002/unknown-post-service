@@ -8,11 +8,11 @@ router.route('/post')
   .post(postController.createPost);
 
 router.route('/post/:id')
-  .get(postController.getPostById);
+  .get(postController.getPostById)
+  .put(postController.updatePost);
 
 router.route('/post/user/:id')
   .get(postController.getPostsByUserId);
-
 
 
 export default router;

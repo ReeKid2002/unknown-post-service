@@ -7,7 +7,8 @@ router.route('/post')
     .get(controllers_1.postController.getPosts)
     .post(controllers_1.postController.createPost);
 router.route('/post/:id')
-    .get(controllers_1.postController.getPostById);
+    .get(controllers_1.postController.getPostById)
+    .put(controllers_1.postController.updatePost);
 router.route('/post/user/:id')
     .get(controllers_1.postController.getPostsByUserId);
 exports.default = router;

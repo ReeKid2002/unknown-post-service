@@ -32,9 +32,22 @@ const createPost = (title: string, content: string, authorId: number) => {
   });
 };
 
+const updatePost = (id: number, title: string, content: string) => {
+  return postClient.update({
+    where: {
+      id,
+    },
+    data: {
+      title,
+      content,
+    },
+  });
+};
+
 export default {
   getPosts,
   getPostById,
   getPostsByUserId,
   createPost,
+  updatePost,
 };
