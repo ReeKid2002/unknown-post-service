@@ -9,6 +9,7 @@ router.route('/post')
 router.route('/post/:id')
     .get(controllers_1.postController.getPostById)
     .put(controllers_1.postController.updatePost)
+    .patch(controllers_1.postController.unpublishPost)
     .delete(controllers_1.postController.deletePost);
 router.route('/post/user/:id')
     .get(controllers_1.postController.getPostsByUserId);

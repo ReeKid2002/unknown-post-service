@@ -45,6 +45,17 @@ const updatePost = (id: number, title: string, content: string) => {
   });
 };
 
+const unpublishPost = (id: number) => {
+  return postClient.update({
+    where: {
+      id,
+    },
+    data: {
+      published: false,
+    },
+  });
+};
+
 const deletePost = (id: number) => {
   return postClient.update({
     where: {
@@ -62,5 +73,6 @@ export default {
   getPostsByUserId,
   createPost,
   updatePost,
+  unpublishPost,
   deletePost,
 };

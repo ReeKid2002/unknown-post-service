@@ -135,6 +135,44 @@ const updatePost = async (req: IRequestWithUserData, res: Response) => {
   }
 };
 
+const unpublishPost = async (req: IRequestWithUserData, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { id: userId } = req.user;
+
+    const post = await postService.getPostById(Number(id));
+    if(!post) {
+      return res.status(401).json({
+        message: 'Post not found',
+      });
+    }
+
+    if(post.authorId !== userId) {
+      return res.status(401).json({
+        message: 'You are not authorized to unpublish this post',
+      });
+    }
+
+    const updatedPost = await postService.unpublishPost(Number(id));
+    if(!updatedPost) {
+      return res.status(400).json({
+        message: 'Unable to unpublish post',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Post unpublished successfully',
+      payload: updatedPost,
+    });
+  } catch (error) {
+    if(error instanceof Error)
+      res.status(500).json({
+        message: 'Something went wrong',
+        error: error.message,
+      });
+  }
+};
+
 const deletePost = async (req: IRequestWithUserData, res: Response) => {
   try {
     const { id } = req.params;
@@ -179,5 +217,6 @@ export default {
   getPostsByUserId,
   createPost,
   updatePost,
+  unpublishPost,
   deletePost,
 };
