@@ -19,12 +19,37 @@ const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (error) {
-        res.status(500).json({
-            message: 'Something went wrong',
-            error,
+        if (error instanceof Error)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: error.message,
+            });
+    }
+});
+const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const post = yield services_1.postService.getPostById(Number(id));
+        if (!post) {
+            return res.status(404).json({
+                message: 'Post not found',
+            });
+        }
+        res.status(200).json({
+            message: 'Post fetched successfully',
+            payload: post,
         });
+    }
+    catch (error) {
+        console.log(error);
+        if (error instanceof Error)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: error.message,
+            });
     }
 });
 exports.default = {
     getPosts,
+    getPostById,
 };

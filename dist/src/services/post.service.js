@@ -5,6 +5,14 @@ const postClient = new client_1.PrismaClient().post;
 const getPosts = () => {
     return postClient.findMany();
 };
+const getPostById = (id) => {
+    return postClient.findUnique({
+        where: {
+            id,
+        },
+    });
+};
 exports.default = {
     getPosts,
+    getPostById,
 };
