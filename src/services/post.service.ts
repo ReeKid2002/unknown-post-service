@@ -3,7 +3,12 @@ import { PrismaClient } from '@prisma/client';
 const postClient = new PrismaClient().post;
 
 const getPosts = () => {
-  return postClient.findMany();
+  return postClient.findMany({
+    where: {
+      published: true,
+      deleted: false,
+    },
+  });
 };
 
 const getPostById = (id: number) => {

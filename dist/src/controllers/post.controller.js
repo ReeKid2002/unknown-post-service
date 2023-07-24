@@ -51,6 +51,12 @@ const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 const getPostsByUserId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.user;
+        const { id: userId } = req.params;
+        if (id !== Number(userId)) {
+            return res.status(401).json({
+                message: 'You are not authorized to view this user\'s posts',
+            });
+        }
         const posts = yield services_1.postService.getPostsByUserId(id);
         if (!posts) {
             return res.status(404).json({

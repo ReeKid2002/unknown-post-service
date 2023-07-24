@@ -52,6 +52,14 @@ interface IRequestWithUserData extends Request {
 const getPostsByUserId = async (req: IRequestWithUserData, res: Response) => {
   try {
     const { id } = req.user;
+    const { id: userId } = req.params;
+    
+    if(id !== Number(userId)) {
+      return res.status(401).json({
+        message: 'You are not authorized to view this user\'s posts',
+      });
+    }
+
     const posts = await postService.getPostsByUserId(id);
     if(!posts) {
       return res.status(404).json({

@@ -2,15 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const controllers_1 = require("../controllers");
+const middlewares_1 = require("../middlewares");
 const router = (0, express_1.Router)();
 router.route('/post')
-    .get(controllers_1.postController.getPosts)
-    .post(controllers_1.postController.createPost);
+    .get(middlewares_1.validationMiddleware.validateUser, controllers_1.postController.getPosts)
+    .post(middlewares_1.validationMiddleware.validateUser, middlewares_1.validationMiddleware.getUserDetails, controllers_1.postController.createPost);
 router.route('/post/:id')
-    .get(controllers_1.postController.getPostById)
-    .put(controllers_1.postController.updatePost)
-    .patch(controllers_1.postController.unpublishPost)
-    .delete(controllers_1.postController.deletePost);
+    .get(middlewares_1.validationMiddleware.validateUser, controllers_1.postController.getPostById)
+    .put(middlewares_1.validationMiddleware.validateUser, middlewares_1.validationMiddleware.getUserDetails, controllers_1.postController.updatePost)
+    .patch(middlewares_1.validationMiddleware.validateUser, middlewares_1.validationMiddleware.getUserDetails, controllers_1.postController.unpublishPost)
+    .delete(middlewares_1.validationMiddleware.validateUser, middlewares_1.validationMiddleware.getUserDetails, controllers_1.postController.deletePost);
 router.route('/post/user/:id')
-    .get(controllers_1.postController.getPostsByUserId);
+    .get(middlewares_1.validationMiddleware.validateUser, middlewares_1.validationMiddleware.getUserDetails, controllers_1.postController.getPostsByUserId);
 exports.default = router;
